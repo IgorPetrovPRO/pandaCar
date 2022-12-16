@@ -4,10 +4,16 @@
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SignInController;
+use App\Http\Controllers\CitiesController;
+use App\Http\Controllers\CountriesController;
 use App\Http\Controllers\DarkModeController;
+use App\Http\Controllers\FaqCategoriesController;
+use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Profile\ChangePasswordController;
 use App\Http\Controllers\Profile\UserController;
+use App\Http\Controllers\PropertiesController;
+use App\Http\Controllers\ReviewsController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -41,4 +47,24 @@ Route::middleware('auth')->group(function () {
         Route::get('change-password', 'page')->name('password');
         Route::post('change-password', 'update')->name('password.update');
     });
+
+    Route::resource('countries', CountriesController::class);
+    Route::resource('cities', CitiesController::class);
+    Route::resource('faq-categories', FaqCategoriesController::class);
+    Route::resource('faq', FaqsController::class);
+    Route::resource('reviews', ReviewsController::class);
+    Route::resource('properties', PropertiesController::class);
+
 });
+
+
+//Route::middleware(['splade'])->group(function () {
+//    Route::get('/', fn () => view('home'))->name('home');
+//    Route::get('/docs', fn () => view('docs'))->name('docs');
+//
+//    // Registers routes to support Table Bulk Actions and Exports...
+//    Route::spladeTable();
+//
+//    // Registers routes to support async File Uploads with Filepond...
+//    Route::spladeUploads();
+//});

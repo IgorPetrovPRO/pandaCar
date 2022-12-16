@@ -27,7 +27,7 @@ class UserController extends Controller
                 Storage::delete($user->photo);
             }
 
-            $photo = $request->file('photo')->store('/users');
+            $photo = Storage::disk('public')->put('users', $request->file('photo'));
             $data["photo"] = $photo;
         }
 
