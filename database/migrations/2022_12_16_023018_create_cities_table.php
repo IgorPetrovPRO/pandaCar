@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('position')->default(0);
             $table->integer('additional_cost')->default(0);
             $table->foreignIdFor(Country::class)
                 ->constrained()

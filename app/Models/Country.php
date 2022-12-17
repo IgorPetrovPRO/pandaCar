@@ -10,6 +10,7 @@ class Country extends Model
 {
     protected $fillable = [
         'name',
+        'position',
     ];
 
     public function cities(): BelongsToMany

@@ -13,6 +13,7 @@ class City extends Model
         'name',
         'country_id',
         'additional_cost',
+        'position',
     ];
     public function country(): BelongsTo
     {

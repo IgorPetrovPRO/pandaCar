@@ -12,6 +12,7 @@ class CitySeeder extends Seeder
         City::insert([
             'name' => 'Москва',
             'country_id' => 1,
+            'position' => 1,
             'additional_cost' => 0,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
@@ -19,6 +20,7 @@ class CitySeeder extends Seeder
         City::insert([
             'name' => 'Санкт-Петербург',
             'country_id' => 1,
+            'position' => 2,
             'additional_cost' => 150,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
@@ -26,6 +28,7 @@ class CitySeeder extends Seeder
         City::insert([
             'name' => 'Екатеринбург',
             'country_id' => 1,
+            'position' => 3,
             'additional_cost' => 200,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
@@ -33,6 +36,7 @@ class CitySeeder extends Seeder
         City::insert([
             'name' => 'Новосибирск',
             'country_id' => 1,
+            'position' => 4,
             'additional_cost' => 400,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
@@ -40,6 +44,7 @@ class CitySeeder extends Seeder
         City::insert([
             'name' => 'Владивосток',
             'country_id' => 1,
+            'position' => 5,
             'additional_cost' => 500,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),

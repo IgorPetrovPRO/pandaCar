@@ -8,7 +8,7 @@
 
     <div class="grid grid-cols-11 gap-x-6 mt-5 pb-20">
 
-        <form class="intro-y col-span-11 2xl:col-span-9" method="POST" action="{{route('categories.store')}}">
+        <form class="intro-y col-span-11 2xl:col-span-9" method="POST" action="{{route('faqs.store')}}">
             @csrf
             <!-- BEGIN: Product Information -->
             <div class="intro-y box p-5 mt-5">

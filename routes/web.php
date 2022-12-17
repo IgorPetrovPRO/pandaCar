@@ -51,20 +51,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('countries', CountriesController::class);
     Route::resource('cities', CitiesController::class);
     Route::resource('faq-categories', FaqCategoriesController::class);
-    Route::resource('faq', FaqsController::class);
+    Route::resource('faqs', FaqsController::class);
     Route::resource('reviews', ReviewsController::class);
     Route::resource('properties', PropertiesController::class);
 
 });
-
-
-//Route::middleware(['splade'])->group(function () {
-//    Route::get('/', fn () => view('home'))->name('home');
-//    Route::get('/docs', fn () => view('docs'))->name('docs');
-//
-//    // Registers routes to support Table Bulk Actions and Exports...
-//    Route::spladeTable();
-//
-//    // Registers routes to support async File Uploads with Filepond...
-//    Route::spladeUploads();
-//});

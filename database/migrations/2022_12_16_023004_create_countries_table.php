@@ -10,7 +10,8 @@ return new class extends Migration {
     {
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();;
+            $table->string('name')->unique();
+            $table->integer('position')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
