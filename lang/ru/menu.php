@@ -5,7 +5,9 @@ return [
         'home' => 'Главная',
         'countries' => 'Страны',
         'faqs' => 'FAQ',
-        'reviews' => 'Отзывы'
+        'reviews' => 'Отзывы',
+        'property' => 'Параметры',
+        'categories' => 'Категории',
     ],
     'profile' => [
         'personal' => 'Данные',

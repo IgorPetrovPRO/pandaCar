@@ -20,6 +20,8 @@ class ReviewRequest extends FormRequest
             'name' => ['required'],
             'description' => ['required'],
             'media' => ['file'],
+            'author_link' => [],
+            'city' => [],
         ];
     }
 

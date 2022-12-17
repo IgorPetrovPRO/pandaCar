@@ -57,17 +57,20 @@ class ReviewsController extends Controller
 
     public function update(ReviewRequest $request, Review $review)
     {
+        $data = $request->validated();
+
         if($request->has('media')){
 
-            if($user->photo){
-                Storage::delete($user->photo);
+            if($review->media){
+                Storage::delete($review->media);
             }
-
-            $photo = Storage::disk('public')->put('users', $request->file('photo'));
-            $data["photo"] = $photo;
+            $file = Storage::disk('public')->put('media', $request->file('media'));
+            $fileType = $request->file('media')->extension();
+            $data["media"] = $file;
+            $data["media_type"] = $fileType;
         }
 
-        $review->update($request->validated());
+        $review->update($data);
         flash()->success('Отзыв успешно обновлен', 'Обновлено');
         return redirect(route("reviews.index"));
     }

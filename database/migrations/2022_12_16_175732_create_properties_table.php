@@ -13,7 +13,8 @@ return new class extends Migration {
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('name');
+            $table->decimal('default')->default(0);
             $table->tinyInteger('type');
             $table->softDeletes();
             $table->timestamps();

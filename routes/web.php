@@ -4,6 +4,7 @@
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SignInController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CountriesController;
 use App\Http\Controllers\DarkModeController;
@@ -54,5 +55,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('faqs', FaqsController::class);
     Route::resource('reviews', ReviewsController::class);
     Route::resource('properties', PropertiesController::class);
-
+    Route::resource('categories', CategoriesController::class);
 });

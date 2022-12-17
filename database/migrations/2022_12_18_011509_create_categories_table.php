@@ -8,11 +8,10 @@ return new class extends Migration {
     use SoftDeletes;
     public function up(): void
     {
-        Schema::create('countries', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->integer('position')->default(0);
-            $table->json('category')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -21,7 +20,7 @@ return new class extends Migration {
     public function down(): void
     {
         if (!app()->isProduction()) {
-            Schema::dropIfExists('countries');
+            Schema::dropIfExists('categories');
         }
     }
 };
