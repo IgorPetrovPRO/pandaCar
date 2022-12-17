@@ -18,6 +18,8 @@ class ReviewRequest extends FormRequest
     {
         return [
             'name' => ['required'],
+            'description' => ['required'],
+            'media' => ['file'],
         ];
     }
 

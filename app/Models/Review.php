@@ -9,7 +9,8 @@ class Review extends Model
     protected $fillable = [
         'name',
         'description',
-        'video',
+        'media',
+        'media_type',
         'author_link',
         'city',
     ];

@@ -12,8 +12,9 @@ return new class extends Migration {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description')->nullable();
-            $table->string('video')->nullable();
+            $table->string('description');
+            $table->string('media')->nullable();
+            $table->string('media_type')->nullable();
             $table->string('author_link')->nullable();
             $table->string('city')->nullable();
             $table->softDeletes();

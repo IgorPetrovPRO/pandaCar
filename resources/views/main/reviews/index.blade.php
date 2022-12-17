@@ -48,9 +48,6 @@
                     <thead>
                     <tr>
                         <th class="whitespace-nowrap">{{ __('reviews.table_th_name') }}</th>
-                        <th class="text-center whitespace-nowrap">{{ __('reviews.table_th_products') }}</th>
-                        <th class="text-center whitespace-nowrap">{{ __('reviews.table_th_status') }}</th>
-                        <th class="text-center whitespace-nowrap">{{ __('reviews.table_th_action') }}</th>
                     </tr>
                     </thead>
                     <tbody>

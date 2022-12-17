@@ -10,7 +10,7 @@ class FaqsController extends Controller
 {
     public function index(Request $request)
     {
-
+        return redirect(route('faq-categories.index'));
     }
 
     public function create(Request $request)

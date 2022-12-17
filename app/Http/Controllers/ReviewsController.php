@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ReviewRequest;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Storage;
 
 class ReviewsController extends Controller
 {
@@ -24,14 +25,23 @@ class ReviewsController extends Controller
 
     public function create()
     {
-        return view("main.reviews.create", []);
+        return view("main.reviews.create");
     }
 
     public function store(ReviewRequest $request)
     {
-        Review::create($request->validated());
+
+        $data = $request->validated();
+
+        if($request->hasFile('media')){
+            $file = Storage::disk('public')->put('media', $request->file('media'));
+            $fileType = $request->file('media')->extension();
+            $data["media"] = $file;
+            $data["media_type"] = $fileType;
+        }
+        Review::create($data);
         flash()->success('Отзыв успешно добавлена', 'Добавлено');
-        return redirect(route("countries.index"));
+        return redirect(route("reviews.index"));
     }
 
     public function show(Review $review)
@@ -40,14 +50,25 @@ class ReviewsController extends Controller
 
     public function edit(Review $review)
     {
-        return view("main.reviews.create", [
+        return view("main.reviews.edit", [
             "review" => $review,
         ]);
     }
 
     public function update(ReviewRequest $request, Review $review)
     {
+        if($request->has('media')){
+
+            if($user->photo){
+                Storage::delete($user->photo);
+            }
+
+            $photo = Storage::disk('public')->put('users', $request->file('photo'));
+            $data["photo"] = $photo;
+        }
+
         $review->update($request->validated());
+        flash()->success('Отзыв успешно обновлен', 'Обновлено');
         return redirect(route("reviews.index"));
     }
 
@@ -55,6 +76,6 @@ class ReviewsController extends Controller
     {
         $review->delete();
         flash()->success('Отзыв успешно удален', 'Удалено');
-        return redirect(route("countries.index"));
+        return redirect(route("reviews.index"));
     }
 }

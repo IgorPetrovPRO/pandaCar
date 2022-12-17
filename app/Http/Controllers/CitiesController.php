@@ -10,7 +10,7 @@ class CitiesController extends Controller
 {
     public function index(Request $request)
     {
-
+        return redirect(route('countries.index'));
     }
 
     public function create(Request $request)
