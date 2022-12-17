@@ -10,28 +10,23 @@ class FaqsController extends Controller
 {
     public function index(Request $request)
     {
-        $text = $request->text;
-        $per_page = $request->per_page ?? 10;
-        $faqs = Faq::where('question', 'LIKE', "%{$text}%")
-            ->orderBy("created_at", "DESC")
-            ->paginate($per_page)
-            ->withQueryString();
 
-        return view("main.faqs.index", [
-            "faqs" => $faqs,
-        ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view("main.faqs.create", []);
+        $last_position = Faq::where('faq_category_id', '=',$request->category)->count() + 1;
+        return view("main.faqs.create",[
+            'category' => $request->category,
+            'last_position' => $last_position,
+        ]);
     }
 
     public function store(FaqRequest $request)
     {
-        Faq::create($request->validated());
-        flash()->success('Страна успешно добавлена', 'Добавлено');
-        return redirect(route("faqs.index"));
+        $faq = Faq::create($request->validated());
+        flash()->success('Вопрос успешно добавлена', 'Добавлено');
+        return redirect(route("faq-categories.edit", $faq->faq_category_id));
     }
 
     public function show(Faq $faq)
@@ -40,7 +35,7 @@ class FaqsController extends Controller
 
     public function edit(Faq $faq)
     {
-        return view("main.faqs.create", [
+        return view("main.faqs.edit", [
             "faq" => $faq,
         ]);
     }
@@ -48,13 +43,15 @@ class FaqsController extends Controller
     public function update(FaqRequest $request, Faq $faq)
     {
         $faq->update($request->validated());
-        return redirect(route("faqs.index"));
+        flash()->success('Вопрос успешно обновлен', 'Обновлен');
+        return redirect(route("faq-categories.edit",$faq->faq_category_id));
     }
 
     public function destroy(Faq $faq)
     {
+        $category = $faq->faq_category_id;
         $faq->delete();
-        flash()->success('Страна успешно удалена', 'Удалено');
-        return redirect(route("faqs.index"));
+        flash()->success('Вопрос успешно удален', 'Удалено');
+        return redirect(route("faq-categories.edit",$category));
     }
 }

@@ -1,17 +1,8 @@
 <tr class="intro-x">
     <td>
-        <a href="" class="font-medium whitespace-nowrap">{{ $faq->question }}</a>
-        <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">
-            -
-        </div>
+        <p class="font-medium whitespace-nowrap">{{ $faq->question }}</p>
     </td>
-    <td class="text-center">50</td>
-    <td class="w-40">
-        <div
-            class="flex items-center justify-center {{-- $faker['true_false'][0] ? 'text-success' : 'text-danger' --}}">
-
-        </div>
-    </td>
+    <td class="text-center">{{$faq->position}}</td>
     <td class="table-report__action w-56">
         <div class="flex justify-center items-center">
             <a class="flex items-center mr-3" href="{{ route('faqs.index') }}/{{$faq->id}}/edit">

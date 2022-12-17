@@ -26,11 +26,16 @@
             </div>
         </label>
         <div class="w-full mt-3 xl:mt-0 flex-1">
-            <input id="{{$name}}" type="{{$type}}"
-                   class="form-control @error($name) border-danger @enderror"
-                   name="{{$name}}"
-                   placeholder="{{$placeholder}}"
-                   value="{{$value}}">
+            @if($type == 'textarea')
+                <textarea id="{{$name}}" name="{{$name}}"
+                       class="form-control @error($name) border-danger @enderror" rows="4" placeholder="{{$placeholder}}">{{$value}}</textarea>
+            @else
+                <input id="{{$name}}" type="{{$type}}"
+                       class="form-control @error($name) border-danger @enderror"
+                       name="{{$name}}"
+                       placeholder="{{$placeholder}}"
+                       value="{{$value}}">
+            @endif
 
             @error($name)
             <div class="form-help text-danger">{{$message}}</div>

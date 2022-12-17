@@ -80,8 +80,8 @@
                     <thead>
                     <tr>
                         <th class="whitespace-nowrap">{{ __('cities.table_th_name') }}</th>
-                        <th class="text-center whitespace-nowrap">{{ __('cities.table_th_position') }}</th>
-                        <th class="text-center whitespace-nowrap">{{ __('cities.table_th_additional_cost') }}</th>
+                        <th class="whitespace-nowrap">{{ __('cities.table_th_position') }}</th>
+                        <th class="whitespace-nowrap">{{ __('cities.table_th_additional_cost') }}</th>
                         <th class="text-center whitespace-nowrap">{{ __('cities.table_th_action') }}</th>
                     </tr>
                     </thead>

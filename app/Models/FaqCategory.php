@@ -9,6 +9,7 @@ class FaqCategory extends Model
 {
     protected $fillable = [
         'name',
+        'position',
     ];
     public function faqs(): BelongsToMany
     {

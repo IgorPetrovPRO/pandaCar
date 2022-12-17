@@ -16,6 +16,7 @@ return new class extends Migration {
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->integer('position')->default(0);
             $table->softDeletes();
             $table->text('question');
             $table->text('answer');

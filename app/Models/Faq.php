@@ -11,6 +11,7 @@ class Faq extends Model
         'faq_category_id',
         'question',
         'answer',
+        'position',
     ];
     public function categories(): BelongsTo
     {

@@ -18,6 +18,7 @@ class FaqCategoryRequest extends FormRequest
     {
         return [
             'name' => ['required'],
+            'position' => ['numeric'],
         ];
     }
 

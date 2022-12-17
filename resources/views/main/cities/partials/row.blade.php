@@ -2,10 +2,10 @@
     <td>
         <p class="font-medium whitespace-nowrap">{{ $city->name }}</p>
     </td>
-    <td>
+    <td class="text-center">
         {{ $city->position }}
     </td>
-    <td>
+    <td class="text-center">
         {{ $city->additional_cost }}
     </td>
     <td class="table-report__action w-56">

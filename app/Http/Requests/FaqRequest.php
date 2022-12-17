@@ -18,7 +18,9 @@ class FaqRequest extends FormRequest
     {
         return [
             'question' => ['required'],
-            'answer' => ['required']
+            'answer' => ['required'],
+            'position' => ['numeric'],
+            'faq_category_id' => ['required'],
         ];
     }
 
