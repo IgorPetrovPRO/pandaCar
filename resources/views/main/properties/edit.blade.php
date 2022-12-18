@@ -18,7 +18,9 @@
                         <x-input required="1" placeholder="Укажите название" value="{{old('name', $property->name)}}" name="name">
                             Название
                         </x-input>
-
+                        <x-input placeholder="Укажите ключ" value="{{old('key', $property->key)}}" name="hidden">
+                            Ключ
+                        </x-input>
                         <select class="form-select mt-2 sm:mr-2" name="type" aria-label="Тип параметра">
                             <option value="1" @if($property->type == 1) selected @endif>Просто число</option>
                             <option value="2" @if($property->type == 2) selected @endif>Процент от стоимости</option>

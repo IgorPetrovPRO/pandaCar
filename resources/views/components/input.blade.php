@@ -15,7 +15,7 @@
         <label class="form-label xl:w-64 xl:!mr-10" for="{{$name}}">
             <div class="text-left">
                 <div class="flex items-center">
-                    <div class="font-medium">{{$slot}}</div>
+                    <div class="f">{{$slot}}</div>
                     @if($required)
                         <div
                             class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">

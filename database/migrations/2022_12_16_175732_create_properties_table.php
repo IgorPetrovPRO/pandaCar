@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\City;
-use App\Models\Country;
-use App\Models\Property;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,24 +11,10 @@ return new class extends Migration {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('key')->nullable();
             $table->tinyInteger('type');
             $table->softDeletes();
             $table->timestamps();
-        });
-
-        Schema::create('country_property', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Country::class)
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreignIdFor(Property::class)
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->string('value');
         });
 
     }

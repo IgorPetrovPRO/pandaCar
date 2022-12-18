@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CountryRequest;
+use App\Models\Category;
 use App\Models\City;
 use App\Models\Country;
 use Illuminate\Http\Request;
@@ -52,15 +53,20 @@ class CountriesController extends Controller
             ->paginate($per_page)
             ->withQueryString();
 
+        $categories = Category::get();
+
         return view("main.countries.edit", [
             "country" => $country,
             "cities" => $cities,
+            "categories" => $categories,
         ]);
     }
 
     public function update(CountryRequest $request, Country $country)
     {
-        $country->update($request->validated());
+        $data = $request->validated();
+        $data['category'] = json_encode($request->category,1);
+        $country->update($data);
         flash()->success('Страна успешно обновлена', 'Обновлена');
         return redirect(route("countries.edit", $country->id));
     }

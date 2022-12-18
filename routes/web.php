@@ -4,6 +4,7 @@
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SignInController;
+use App\Http\Controllers\CalcController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CountriesController;
@@ -50,10 +51,19 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::resource('countries', CountriesController::class);
+    Route::controller(CalcController::class)->group(function (){
+        Route::get('calc/{country}/{category}', 'index')->name('calc');
+        Route::post('calc/{country}/{category}', 'update')->name('calc.update');
+        Route::get('count/{price}/{country}/{category}', 'calculation')->name('calc.calculation');
+    });
+
+
     Route::resource('cities', CitiesController::class);
     Route::resource('faq-categories', FaqCategoriesController::class);
     Route::resource('faqs', FaqsController::class);
     Route::resource('reviews', ReviewsController::class);
     Route::resource('properties', PropertiesController::class);
     Route::resource('categories', CategoriesController::class);
+
+
 });

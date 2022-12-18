@@ -10,6 +10,7 @@ class PropertyRequest extends FormRequest
     {
         return [
             'name' => ['required'],
+            'key' => ['required','not_in:price','string'],
             'type' => ['required'],
         ];
     }

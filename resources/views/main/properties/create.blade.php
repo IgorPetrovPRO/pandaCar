@@ -17,7 +17,6 @@
                         <x-input required="1" placeholder="Укажите название" value="{{old('name')}}" name="name">
                             Название
                         </x-input>
-
                         <select class="form-select mt-2 sm:mr-2" name="type" aria-label="Тип параметра">
                             <option value="1" selected>Просто число</option>
                             <option value="2" >Процент от стоимости</option>

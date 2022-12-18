@@ -11,17 +11,13 @@ class Country extends Model
     protected $fillable = [
         'name',
         'position',
+        'category',
+        'properties',
     ];
 
     public function cities(): BelongsToMany
     {
         return $this->belongsToMany(City::class);
-    }
-
-    public function properties(): BelongsToMany
-    {
-        return $this->belongsToMany(Property::class)
-            ->withPivot('value');
     }
 
 }

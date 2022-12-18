@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('name')->unique();
             $table->integer('position')->default(0);
             $table->json('category')->nullable();
+            $table->json('properties')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

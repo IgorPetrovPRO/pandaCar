@@ -21,6 +21,27 @@
                         <x-input placeholder="Укажите название категории" value="{{old('position',$country->position)}}" name="position">
                             Позиция вывода
                         </x-input>
+
+
+                        <div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
+                            <div class="form-label xl:w-64 xl:!mr-10">
+                                <div class="text-left">
+                                    <div class="flex items-center">
+                                        <div class="font-medium">Категории</div>
+                                    </div>
+                                    <div class="leading-relaxed text-slate-500 text-xs mt-3">Вы можете выбрать какие виды транспорта можно рассчитать</div>
+                                </div>
+                            </div>
+                            <div class="w-full mt-3 xl:mt-0 flex-1">
+
+                                <select id="category" name="category[]" data-placeholder="Категории" class="tom-select w-full tomselected" multiple="multiple" tabindex="-1" hidden="hidden">
+
+                                    @foreach($categories as $category)
+                                        <option value="{{$category->id}}" @if( Str::contains($country->category, $category->id) ) selected @endif >{{$category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -103,6 +124,42 @@
         @endif
 
     </div>
+
+
+{{--    Настройки параметров--}}
+    <h2 class="intro-y text-lg font-medium mt-10">Параметры калькуляторов</h2>
+    <div class="grid grid-cols-12 gap-6 mt-5">
+        <!-- BEGIN: Data List -->
+                    <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
+                <table class="table table-report -mt-2">
+                    <thead>
+                    <tr>
+                        <th class="whitespace-nowrap">{{ __('cities.table_th_name') }}</th>
+                        <th class="text-center whitespace-nowrap">{{ __('cities.table_th_action') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($categories as $category)
+                        <tr class="intro-x">
+                            <td>
+                                <p class="font-medium whitespace-nowrap">{{ $category->name }}</p>
+                            </td>
+                            <td class="table-report__action w-56">
+                                <div class="flex justify-center items-center">
+                                    <a class="flex items-center mr-3" href="{{ route('calc', [$country->id, $category->id]) }}">
+                                        <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> {{ __('common.btn_edit') }}
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+
+                    @endforeach
+
+                    </tbody>
+                </table>
+            </div>
+    </div>
+
 @endsection
 
 @section('script')

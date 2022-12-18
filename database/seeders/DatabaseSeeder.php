@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FaqCategorySeeder::class);
         $this->call(FaqSeeder::class);
         $this->call(CategorySeeder::class);
+        $this->call(PropertySeeder::class);
     }
 }

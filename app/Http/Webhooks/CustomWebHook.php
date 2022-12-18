@@ -2,6 +2,8 @@
 
 namespace App\Http\Webhooks;
 
+use App\Models\Category;
+use App\Models\Country;
 use App\Models\Statistic;
 use DefStudio\Telegraph\Handlers\WebhookHandler;
 use DefStudio\Telegraph\Keyboard\Button;
@@ -63,5 +65,11 @@ class CustomWebHook extends WebhookHandler
                 Button::make('Вернуться в начало')->action('returnBack'),
             ])
         )->send();
+    }
+
+    public function calculation(Int $price, Country $country, Category $category):int
+    {
+        $existProperties = json_decode($country->properties,1);
+        return $price;
     }
 }

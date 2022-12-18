@@ -19,6 +19,7 @@ class CountryRequest extends FormRequest
         return [
             'name' => ['required','min:3'],
             'position' => ['numeric'],
+            'category' => [],
         ];
     }
 
