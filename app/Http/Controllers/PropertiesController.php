@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PropertyRequest;
+use App\Models\Currency;
 use App\Models\Property;
 use Illuminate\Http\Request;
 
@@ -10,6 +11,7 @@ class PropertiesController extends Controller
 {
     public function index(Request $request)
     {
+        $currencies = Currency::get()->toArray();
         $text = $request->text;
         $per_page = $request->per_page ?? 10;
         $properties = Property::where('name', 'LIKE', "%{$text}%")
@@ -19,6 +21,7 @@ class PropertiesController extends Controller
 
         return view("main.properties.index", [
             "properties" => $properties,
+            "currencies" => $currencies,
         ]);
     }
 
@@ -58,4 +61,5 @@ class PropertiesController extends Controller
         flash()->success('Параметр успешно удален', 'Удалено');
         return redirect(route("properties.index"));
     }
+
 }

@@ -11,6 +11,7 @@ class ReviewsController extends Controller
 {
     public function index(Request $request)
     {
+
         $text = $request->text;
         $per_page = $request->per_page ?? 10;
         $reviews = Review::where('name', 'LIKE', "%{$text}%")

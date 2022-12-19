@@ -3,24 +3,49 @@
 namespace App\Http\Webhooks;
 
 use App\Models\Category;
+use App\Models\City;
 use App\Models\Country;
-use App\Models\Statistic;
+use App\Models\Currency;
+use App\Models\Faq;
+use App\Models\FaqCategory;
+use App\Models\Property;
+use App\Models\Review;
 use DefStudio\Telegraph\Handlers\WebhookHandler;
 use DefStudio\Telegraph\Keyboard\Button;
 use DefStudio\Telegraph\Keyboard\Keyboard;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Stringable;
 
 
 class CustomWebHook extends WebhookHandler
 {
 
-
     protected function handleChatMessage(Stringable $text): void
     {
         if (str_contains($this->chat->name, '[group]')) {
             return;
         }
-        $this->notFound($text);
+        $text = trim(str_replace(' ', '', $text));
+        if($this->chat->storage()->get('country_id')){
+            if (is_numeric($text)) {
+
+                $sum = (int)$text;
+                $amount = $this->calculation($sum);
+                $answerText = "Предварительная стоимость:\n " . $amount ."руб. \n\n📍 В стоимость включено: цена авто, налоги, доставка";
+                $this->chat->html($answerText)->keyboard(Keyboard::make()->buttons([
+                        Button::make('Сделать новый расчет')->action('countryList'),
+                    ]))->send();
+            } else {
+                $this->chat->html('Укажите число')->keyboard(
+                    Keyboard::make()->buttons([
+                        Button::make('или начните с начала')->action('returnBack'),
+                    ])
+                )->send();
+            }
+        }else{
+            $this->notFound($text);
+        }
+
     }
 
     public function start(): void
@@ -28,32 +53,33 @@ class CustomWebHook extends WebhookHandler
         if (str_contains($this->chat->name, '[group]')) {
             return;
         }
-        //TODO вынести в метод
-        $startText = $this->data->toArray();
-        if (array_key_exists('text', $startText)) {
-            $valueStart = explode('_', $startText['text']);
-            if (array_key_exists(1, $valueStart)) {
-                $this->chat->storage()->set('statistic_id', $valueStart[1]);
-            }
-        }
 
-        $text = "Добро пожаловать! Выберите, что вас интересует.";
+        $text = "Добро пожаловать!\nВы можете выбрать интересующий вас раздел";
         $this->chat->html($text)->keyboard(
             Keyboard::make()->buttons([
-                Button::make('Оставить заявку')->action('makeOrder'),
+                Button::make('Рассчитать доставку авто')->action('countryList'),
+                Button::make('Связаться с менеджером')->url('https://t.me/Pandacar_booking'),
+                Button::make('FAQ')->action('faq'),
+                Button::make('Отзывы клиентов')->action('reviews'),
             ])
         )->send();
     }
 
     public function returnBack(): void
     {
-        $text = "Добро пожаловать! Выберите, что вас интересует.";
+        $text = "Добро пожаловать!\nВы можете выбрать интересующий вас раздел";
+        $keyboard = Keyboard::make()->buttons([
+            Button::make('Рассчитать доставку авто')->action('countryList'),
+            Button::make('Связаться с менеджером')->url('https://t.me/Pandacar_booking'),
+            Button::make('FAQ')->action('faq'),
+            Button::make('Отзывы клиентов')->action('reviews'),
+        ]);
 
-        $this->chat->edit($this->messageId)->html($text)->keyboard(
-            Keyboard::make()->buttons([
-                Button::make('Оставить заявку')->action('makeOrder'),
-            ])
-        )->withoutPreview()->send();
+        if ($this->data->get('type') === 'media') {
+            $this->chat->editMedia($this->messageId)->html($text)->keyboard($keyboard)->send();
+        } else {
+            $this->chat->edit($this->messageId)->html($text)->keyboard($keyboard)->send();
+        }
     }
 
     protected function notFound($text): void
@@ -67,9 +93,219 @@ class CustomWebHook extends WebhookHandler
         )->send();
     }
 
-    public function calculation(Int $price, Country $country, Category $category):int
+    public function faq(): void
     {
-        $existProperties = json_decode($country->properties,1);
-        return $price;
+        $faqCategories = FaqCategory::orderBy('position','ASC')->get();
+        $buttons = [];
+        foreach ($faqCategories as $faqCategory) {
+            $btn = Button::make($faqCategory->name)->action('questions')->param('value', $faqCategory->id);
+            $buttons[] = $btn;
+        }
+        $buttons[] = Button::make('◀️ Назад')->action('returnBack');
+        $keyboard = Keyboard::make()->buttons($buttons);
+        $response = $this->chat->edit($this->messageId)
+            ->html('Выберите категорию вопросов, которая вас интересует')
+            ->keyboard($keyboard)
+            ->send();
+        if ($response->failed()) {
+            Log::debug($response->dump());
+        }
+    }
+
+    public function questions()
+    {
+        $faqs = Faq::where('faq_category_id', '=', $this->data->get('value'))->orderBy('position','ASC')->get();
+        foreach ($faqs as $faq) {
+            $text = "<b>" . $faq->question . "</b>\n" . $faq->answer;
+            $this->chat->html($text)->withoutPreview()->send();
+        }
+        $this->chat->html('Вернуться к списку категорий')->keyboard(
+            Keyboard::make()->buttons([
+                Button::make('◀️ Назад')->action('faq'),
+            ])
+        )->withoutPreview()->send();
+    }
+
+    public function reviews(): void
+    {
+        $limit = 2;
+        $offset = $this->data->get('offset') ?: 0;
+
+        $reviews = Review::offset($offset)->limit($limit)->orderBy('created_at', 'DESC')->get();
+        $total = Review::count();
+
+        foreach ($reviews as $review) {
+            $text = "<b>" . $review->name . "</b>\n" . $review->description . "\n";
+
+            if ($review->media) {
+                if ($review->media_type == 'mp4') {
+                    $this->chat->document(env('APP_URL') . '/storage/' . $review->media)->html($text)->withoutPreview(
+                    )->send();
+                } else {
+                    $this->chat->photo(env('APP_URL') . '/storage/' . $review->media)->html($text)->withoutPreview(
+                    )->send();
+                }
+            } else {
+                $this->chat->html($text)->withoutPreview()->send();
+            }
+        }
+        if (($total - $limit - $offset) > 0) {
+            if (($total - $limit - $offset) > $limit) {
+                $showNum = $limit;
+            } else {
+                $showNum = $total - $limit - $offset;
+            }
+
+
+            $keyboard = Keyboard::make()->buttons([
+                Button::make('Еще ' . $showNum . ' из ' . $total - $limit - $offset)->action('reviews')->param(
+                    'offset',
+                    $offset + $limit
+                ),
+                Button::make('В главное меню')->action('returnBack'),
+            ]);
+        } else {
+            $keyboard = Keyboard::make()->buttons([
+                Button::make('В главное меню')->action('returnBack'),
+            ]);
+        }
+
+        $this->chat->html('Что делаем дальше?')->keyboard($keyboard)->withoutPreview()->send();
+    }
+
+    public function countryList(): void
+    {
+        $this->chat->storage()->forget('category_id');
+        $this->chat->storage()->forget('country_id');
+        $this->chat->storage()->forget('city_id');
+
+        $countries = Country::orderBy('position','ASC')->get();
+        $buttons = [];
+        foreach ($countries as $country) {
+            $btn = Button::make($country->name)->action('cities')->param('value', $country->id);
+            $buttons[] = $btn;
+        }
+        $buttons[] = Button::make('◀️ Назад')->action('returnBack');
+        $keyboard = Keyboard::make()->buttons($buttons);
+        $response = $this->chat->edit($this->messageId)
+            ->html('Выберите страну')
+            ->keyboard($keyboard)
+            ->send();
+        if ($response->failed()) {
+            Log::debug($response->dump());
+        }
+    }
+
+    public function cities()
+    {
+        $cities = City::where('country_id', '=', $this->data->get('value'))->orderBy('position','ASC')->get();
+        $this->chat->storage()->set('country_id', $this->data->get('value'));
+        $this->chat->storage()->forget('city_id');
+
+        if (sizeof($cities)) {
+            $buttons = [];
+            foreach ($cities as $city) {
+                $btn = Button::make($city->name)->action('city')->param('value', $city->id);
+                $buttons[] = $btn;
+            }
+            $buttons[] = Button::make('◀️ Назад')->action('countryList');
+            $keyboard = Keyboard::make()->buttons($buttons);
+            $response = $this->chat->edit($this->messageId)
+                ->html('Выберите город')
+                ->keyboard($keyboard)
+                ->send();
+            if ($response->failed()) {
+                Log::debug($response->dump());
+            }
+        } else {
+            $this->selectCategories();
+        }
+    }
+
+    public function city(): void
+    {
+        $this->chat->storage()->set('city_id', $this->data->get('value'));
+        $this->selectCategories();
+    }
+
+    public function selectCategories(): void
+    {
+        $this->chat->storage()->forget('category_id');
+
+        $country = Country::where('id','=',$this->chat->storage()->get('country_id'))->first();
+        $showCategory = json_decode($country->category,1);
+        Log::debug($showCategory);
+
+        $categories = Category::orderBy('position','ASC')->get();
+        $buttons = [];
+        foreach ($categories as $category) {
+            if(in_array($category->id,$showCategory)){
+                $btn = Button::make($category->name)->action('waitPrice')->param('value', $category->id);
+                $buttons[] = $btn;
+            }
+
+        }
+        if($this->chat->storage()->get('city_id')){
+            $buttons[] = Button::make('◀️ Назад')->action('cities')->param('value',$this->chat->storage()->get('country_id'));
+        }else{
+            $buttons[] = Button::make('◀️ Назад')->action('countryList');
+        }
+
+        $keyboard = Keyboard::make()->buttons($buttons);
+        $this->chat->edit($this->messageId)
+            ->html('Выберите вид автомобиля')
+            ->keyboard($keyboard)
+            ->send();
+    }
+
+    public function waitPrice(): void
+    {
+        $this->chat->storage()->set('category_id', $this->data->get('value'));
+        $buttons[] = Button::make('◀️ Назад')->action('selectCategories');
+        $keyboard = Keyboard::make()->buttons($buttons);
+        $this->chat->edit($this->messageId)->html('Введите сумму машины в Юанях')->keyboard($keyboard)->send();
+    }
+
+    protected function calculation(int $price): string
+    {
+        $currencyCNY = Currency::where('key','=','CNY')->first();
+        $currencyUSD = Currency::where('key','=','USD')->first();
+
+        $price = ($price * $currencyCNY->value) / $currencyUSD->value;
+        if($this->chat->storage()->get('country_id'))
+        {
+            $delivery = 0;
+            $country = Country::find($this->chat->storage()->get('country_id'));
+
+            if($city = City::find($this->chat->storage()->get('city_id'))){
+                $delivery += $city->additional_cost;
+            }
+
+            $existProperties = json_decode($country->properties, 1);
+
+            $category = $this->chat->storage()->get('category_id');
+            Log::debug($existProperties[$category]);
+            foreach($existProperties[$category] as $property => $value){
+                if(str_contains($property,'property_')){
+                    $arr = explode('_',$property);
+                    $propertyObj = Property::find($arr[1]);
+                    if($propertyObj->type == 2){
+                        $delivery += $price*$value;
+                    }else{
+                        $delivery += $value;
+                    }
+                }
+            }
+
+            //НДС расчет сложный момент
+            $sumNds = $existProperties[$category]['nds']*($price + $price*$existProperties[$category]['duty'] + $price*$existProperties[$category]['excise_duty']);
+
+            $delivery += $sumNds;
+            $delivery += $price;
+
+            return number_format($delivery * $currencyUSD->value, 0, '.', ' ');
+        }else{
+            return 'не верные данные';
+        }
     }
 }

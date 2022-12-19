@@ -14,19 +14,21 @@
             <a class="flex items-center mr-3" href="{{ route('properties.edit', $property->id) }}">
                 <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> {{ __('common.btn_edit') }}
             </a>
-            <x-form-delete>
-                {{ __('common.btn_delete') }}
+            @if( $property->key == '' )
+                <x-form-delete>
+                    {{ __('common.btn_delete') }}
 
-                <x-slot:id>
-                    {{$property->id}}
-                </x-slot:id>
-                <x-slot:action>
-                    {{route('properties.destroy',$property->id)}}
-                </x-slot:action>
-                <x-slot:textNotification>
-                    {!!   __('common.delete_action', ['name' => $property->name]) !!}
-                </x-slot:textNotification>
-            </x-form-delete>
+                    <x-slot:id>
+                        {{$property->id}}
+                    </x-slot:id>
+                    <x-slot:action>
+                        {{route('properties.destroy',$property->id)}}
+                    </x-slot:action>
+                    <x-slot:textNotification>
+                        {!!   __('common.delete_action', ['name' => $property->name]) !!}
+                    </x-slot:textNotification>
+                </x-form-delete>
+            @endif
         </div>
     </td>
 </tr>

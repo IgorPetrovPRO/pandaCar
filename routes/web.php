@@ -8,6 +8,7 @@ use App\Http\Controllers\CalcController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CountriesController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\DarkModeController;
 use App\Http\Controllers\FaqCategoriesController;
 use App\Http\Controllers\FaqsController;
@@ -63,6 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('faqs', FaqsController::class);
     Route::resource('reviews', ReviewsController::class);
     Route::resource('properties', PropertiesController::class);
+    Route::post('currency', [CurrencyController::class, 'update'])->name('currency.update');
     Route::resource('categories', CategoriesController::class);
 
 

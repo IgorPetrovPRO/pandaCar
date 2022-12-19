@@ -30,7 +30,7 @@
                                 <source src="/storage/{{$review->media}}" type='video/mp4;'>
                             </video>
                             <a href="/storage/{{$review->media}}" download>Скачайте видео</a>.
-                        @else
+                        @elseif($review->media_type != '')
                             <img src="/storage/{{$review->media}}" style="max-width: 200px" />
                         @endif
                         <x-input placeholder="Укажите автора" value="{{old('author_link', $review->author_link)}}" name="author_link">

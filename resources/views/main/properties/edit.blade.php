@@ -18,7 +18,7 @@
                         <x-input required="1" placeholder="Укажите название" value="{{old('name', $property->name)}}" name="name">
                             Название
                         </x-input>
-                        <x-input placeholder="Укажите ключ" value="{{old('key', $property->key)}}" name="hidden">
+                        <x-input value="{{old('key', $property->key)}}" name="key" type="hidden">
                             Ключ
                         </x-input>
                         <select class="form-select mt-2 sm:mr-2" name="type" aria-label="Тип параметра">

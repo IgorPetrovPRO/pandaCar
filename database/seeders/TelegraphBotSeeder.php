@@ -17,7 +17,7 @@ class TelegraphBotSeeder extends Seeder
     {
         TelegraphBot::insert([
             'token' => '5831497148:AAGBMyRtaOfj8-QXEmhTh-jWlc2iNfGfPdg',
-            'name' => 'ipetrovpro_bot',
+            'name' => 'ipetrov_bot',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
