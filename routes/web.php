@@ -17,6 +17,7 @@ use App\Http\Controllers\Profile\ChangePasswordController;
 use App\Http\Controllers\Profile\UserController;
 use App\Http\Controllers\PropertiesController;
 use App\Http\Controllers\ReviewsController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -66,6 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('properties', PropertiesController::class);
     Route::post('currency', [CurrencyController::class, 'update'])->name('currency.update');
     Route::resource('categories', CategoriesController::class);
+    Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
 
 
 });

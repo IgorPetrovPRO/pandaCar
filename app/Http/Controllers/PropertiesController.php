@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PropertyRequest;
 use App\Models\Currency;
 use App\Models\Property;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class PropertiesController extends Controller
@@ -12,6 +13,7 @@ class PropertiesController extends Controller
     public function index(Request $request)
     {
         $currencies = Currency::get()->toArray();
+        $settings = Setting::get()->toArray();
         $text = $request->text;
         $per_page = $request->per_page ?? 10;
         $properties = Property::where('name', 'LIKE', "%{$text}%")
@@ -19,9 +21,12 @@ class PropertiesController extends Controller
             ->paginate($per_page)
             ->withQueryString();
 
+
+
         return view("main.properties.index", [
             "properties" => $properties,
             "currencies" => $currencies,
+            "settings" => $settings,
         ]);
     }
 

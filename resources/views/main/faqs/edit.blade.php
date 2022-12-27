@@ -19,7 +19,7 @@
                         <x-input required="1" placeholder="Укажите вопрос" value="{{old('question',$faq->question)}}" name="question">
                             Вопрос
                         </x-input>
-                        <x-input required="1" placeholder="Напишите ответ на вопрос" value="{{old('answer',$faq->answer)}}" type="textarea" name="answer">
+                        <x-input required="1" placeholder="Напишите ответ на вопрос" value="{!!  old('answer',$faq->answer)!!}" type="textarea" name="answer">
                             Ответ
                         </x-input>
                         <x-input placeholder="Укажите название категории" value="{{old('position', $faq->position)}}" name="position">

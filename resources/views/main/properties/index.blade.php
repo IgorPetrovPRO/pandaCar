@@ -7,6 +7,31 @@
 @section('subcontent')
     <div class="grid grid-cols-11 gap-x-6 mt-5 pb-20">
 
+        <form class="intro-y col-span-11 2xl:col-span-9" method="POST" action="{{route('settings.update')}}">
+            @csrf
+            <!-- BEGIN: Product Information -->
+            <div class="intro-y box p-5 mt-5">
+                <div class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
+                    <div class="mt-5">
+
+                        @foreach($settings as $setting)
+                            <x-input placeholder="Укажите значение" value="{{$setting['text']}}" name="{{$setting['key']}}" type="textarea">
+                                {{$setting['name']}}
+                            </x-input>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <!-- END: Product Detail -->
+
+            <div class="flex justify-end flex-col md:flex-row gap-2 mt-5">
+                <button type="submit" class="btn py-3 btn-primary w-full md:w-52">Сохранить</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="grid grid-cols-11 gap-x-6 mt-5 pb-20">
+
         <form class="intro-y col-span-11 2xl:col-span-9" method="POST" action="{{route('currency.update')}}">
             @csrf
             <!-- BEGIN: Product Information -->

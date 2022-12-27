@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('currencies', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->string('key');
             $table->string('name');
-            $table->decimal('value',8,4);
+            $table->text('text');
             $table->timestamps();
         });
     }
@@ -19,7 +19,7 @@ return new class extends Migration {
     public function down(): void
     {
         if (!app()->isProduction()) {
-            Schema::dropIfExists('currencies');
+            Schema::dropIfExists('settings');
         }
     }
 };

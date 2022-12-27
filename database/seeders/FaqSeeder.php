@@ -21,7 +21,7 @@ class FaqSeeder extends Seeder
             'faq_category_id' => 1,
             'position' => 2,
             'question' => 'Хочу узнать условия доставки электрокара до моего города?',
-            'answer' => 'Краткие условия по заказу электрокара из Китая можно почитать по этой <a href="https://docs.google.com/document/d/1rWVbQ_ZUgRCmDLzkxfsEDysUFOEgbNwbfb2yIXTVM0M/edit">ссылке</a> либо связаться  с менеджером по телефону или в чате @pandacar_booking.',
+            'answer' => 'Краткие условия по заказу электрокара из Китая можно почитать по этой <a href="https://docs.google.com/document/d/1rWVbQ_ZUgRCmDLzkxfsEDysUFOEgbNwbfb2yIXTVM0M/edit">ссылке</a> либо связаться  с менеджером по телефону или в чате <a href="https://t.me/Pandacar_booking">@pandacar_booking</a>.',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);

@@ -120,5 +120,24 @@ class PropertySeeder extends Seeder
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
+        Property::insert([
+            'name' => 'Доверенность',
+            'type' => 1,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+        Property::insert([
+            'name' => 'Конвертация для оплаты 2 части',
+            'key' => 'convertation',
+            'type' => 2,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+        Property::insert([
+            'name' => 'Предпродажная подготовка',
+            'type' => 1,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
     }
 }
