@@ -19,7 +19,7 @@ class CountrySeeder extends Seeder
         ]);
         Country::insert([
             'name' => 'Казахстан',
-            'options' => '{"1": {"nds": "0", "duty": "0", "property_1": "1500", "property_2": "2500", "property_3": "0", "property_4": "0", "property_5": "0", "property_6": "0", "property_7": "0", "property_8": "0", "property_9": "0", "excise_duty": "0", "property_10": "0", "property_11": "0", "property_12": "0", "property_13": "0", "property_14": "0", "property_15": "0", "property_19": "0", "property_21": "0", "convertation": "0"}}',
+            'properties' => '{"1": {"nds": "0", "duty": "0", "property_1": "1500", "property_2": "2500", "property_3": "0", "property_4": "0", "property_5": "0", "property_6": "0", "property_7": "0", "property_8": "0", "property_9": "0", "excise_duty": "0", "property_10": "0", "property_11": "0", "property_12": "0", "property_13": "0", "property_14": "0", "property_15": "0", "property_19": "0", "property_21": "0", "convertation": "0"}}',
             'position' => 2,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),

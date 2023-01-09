@@ -35,6 +35,9 @@ class CurrencyUpdate extends Command
         foreach($cbr->Valute as $item) {
             if (in_array($item->NumCode,[840,156])) {
                 $value = str_replace(",", ".", $item->Value);
+                if($item->NumCode == 156){
+                    $value = $value/10;
+                }
                 $currency = Currency::where('key','=',$item->CharCode)->first();
                 $currency->value = $value;
                 $currency->save();
