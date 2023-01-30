@@ -298,8 +298,9 @@ class CustomWebHook extends WebhookHandler
         $currencyUSD = Currency::where('key', '=', 'USD')->first();
         $currencyUSDtoCNY = $currencyUSD->value / $currencyCNY->value;
         $price = $price / $currencyUSDtoCNY;
-        //Log::debug($currencyUSDtoCNY);
-        //Log::debug($price);
+        Log::debug($currencyUSDtoCNY);
+        Log::debug($price);
+
         if ($this->chat->storage()->get('country_id')) {
             $delivery = 0;
             $convertationCost = 0;
@@ -319,51 +320,25 @@ class CustomWebHook extends WebhookHandler
                     $propertyObj = Property::find($arr[1]);
                     if ($propertyObj->type == 2) {
                         $delivery += $price * $value;
-                        //Log::debug($propertyObj->name. ' '. $price*$value);
+                        Log::debug($propertyObj->name. ' '. $price*$value);
                     } else {
                         $delivery += $value;
-                        //Log::debug($propertyObj->name. ' '. $value);
-                    }
-                }
-
-                //TODO - переделать в функцию, и дать возможность формировать формулы
-                //Для конвертации - новый параметр
-                if (in_array(
-                    $property,
-                    [
-                        'property_1',
-                        'property_2',
-                        'property_3',
-                        'property_4',
-                        'property_5',
-                        'property_6',
-                        'property_7',
-                        'property_19',
-                        'property_8',
-                        'property_9',
-                        'property_10'
-                    ]
-                )) {
-                    $arr = explode('_', $property);
-                    $propertyObj = Property::find($arr[1]);
-                    if ($propertyObj->type == 2) {
-                        $convertationCost += $price * $value;
-                    } else {
-                        $convertationCost += $value;
+                        Log::debug($propertyObj->name. ' '. $value);
                     }
                 }
             }
-            $convertationCost += $price * $existProperties[$category]['duty'];
-            $convertationCost = $convertationCost * $existProperties[$category]['convertation'];
-            //Log::debug('Конвертация '.$convertationCost);
-            //Log::debug('Пошлина '. $price*$existProperties[$category]['duty']);
+
+            //Пошлина
             $delivery += $price * $existProperties[$category]['duty'];
-
-
+            Log::debug('Пошлина '. $price * $existProperties[$category]['duty']);
             //НДС расчет сложный момент
             $sumNds = $existProperties[$category]['nds'] * ($price + $price * $existProperties[$category]['duty'] + $price * $existProperties[$category]['excise_duty']);
+            Log::debug('НДС  '. $sumNds);
+            //Конвертация
+            $convertationCost += $price * $existProperties[$category]['duty'] + $existProperties[$category]['convertation_sum'] + $price*$existProperties[$category]['property_2'] + $sumNds;
 
-
+            $convertationCost = $convertationCost * $existProperties[$category]['convertation_percent'];
+            Log::debug('Сумма конвертации  '. $convertationCost);
             $delivery += $convertationCost;
             $delivery += $sumNds;
             $delivery += $price;
